@@ -1,31 +1,39 @@
-body {
-    font: 20px helvetica;
-    text-align:center;
-    background-color: #FFFAFA;
-    align-content: center;
+body{
+  padding:20px;
 }
-
 .axis path,
 .axis line {
     fill: none;
     stroke: #000;
     shape-rendering: crispEdges;
 }
-
-h1 {
-    text-align: center;
-    color:#2F4F4F;
+circle.selected {
+    fill: #ff0000;
 }
-select {
-    font: 22px helvetica bolder;
-    background:beige;
-    color:#2F4F4F;
-
+path {
+    fill: none;
+    stroke-width: 0px;
+    stroke: #666;
 }
-
 .bond {
     width: 5px;
     height: 10px;
     background: #eee;
     display: block;
+}
+#footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #FF0000;
+    height:20px;
+    clear:both;
+    color: #ffffff;
+}
+
+#3dshow {
+    position: fixed;
+    background-color: #FF0000;
+    height:20px;
+    color: #ffffff;
 }

@@ -1,118 +1,45 @@
 <!DOCTYPE html>
 <html>
-<head><link rel="stylesheet" type="text/css" href="lib/styles.css"></head>
+<head>
+<link rel="stylesheet" type="text/css" href="lib/styles.css">
+<link rel="stylesheet" href="css/skel.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/style-desktop.css" />
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-<title>Assignment 3 Testing Centre</title>
-<body>
-    <div>
-        <div>
+<title>Visualizing Molecular Dynamics Simulation</title>
+<body style="overflow-x: scroll">
+            <div align="center">
             <h3>Time Curve Visualization</h3>
-            <label>Plot 1 Variable</label>
-            <input id="plot1" type="radio" name="enable" checked onclick="updateplot1()">
-            <select name="plot1_list" id="plot1_list" onchange="updateData(value)">
-                <option value="1">Select 1 Variable</option>
+            <div>
+            <div style="float:left">
+                <input type="checkbox" name=plotting" id="plotting" onchange="showDiv()">Open Plotting options
+                        </div>
+        <div id="plot_options">
+            <select name="plot_list1" id="plot_list1" onchange="updateData()">
+                <option value="0">Select 1st Variable</option>
             </select>
-        </div>
-        <div>
-            <label>Plot 2 Variables</label>
-            <input id="plot2" type="radio" name="enable"  onclick="updateplot2()">
-            <select name="plot2_list1" id="plot2_list1" onchange="updateData(value)">
-                <option value="1">Select 2 Variables</option>
+            <select name="plot_list2" id="plot_list2" onchange="updateData()">
+                <option value="0">Select 2nd Variables</option>
             </select>
-            <select name="plot2_list2" id="plot2_list2"  onchange="updateData(value)">
-                <option value="1">Select 2 Variables</option>
+            <select name="plot_list3" id="plot_list3"  onchange="updateData()">
+                <option value="0">Select 3rd Variables</option>
             </select>
-        </div>
-        <div>
-            <label>Plot 3 Variables</label>
-            <input id="plot3" type="radio" name="enable"  onclick="updateplot3()">
-            <select name="plot3_list1" id="plot3_list1"  onchange="updateData(value)">
-                <option value="1">Select 3 Variables</option>
-            </select>
-            <select name="plot3_list2" id="plot3_list2"  onchange="updateData(value)">
-                <option value="1">Select 3 Variables</option>
-            </select>
-            <select name="plot3_list3" id="plot3_list3"  onchange="updateData(value)">
-                <option value="1">Select 3 Variables</option>
-            </select>
-        </div>
-        <div data-role="main" class="ui-content">
-                <div data-role="rangeslider">
-                    <label for="time-min">Time</label>
-                    <input type="range" name="time-min" id="time-min" value="1" min="1" max="200" onchange="updateData(value)">
-                    <label for="time-max">Time</label>
-                    <input type="range" name="time-max" id="time-max" value="10" min="1" max="200" onchange="updateData(value)">
-                </div>
-        </div>
-	</div>
-    <div style="width: 100%; overflow: hidden;">
+      </div>
+            </div>
+    <div style="width: 100%; overflow-x: scroll">
     <div id="wrap" style="width: 600px; float: left;"></div>
     <div id="container" style="margin-left: 620px;"></div>
-    </div>
-	<script src="lib/d3.min.js"></script>
-	<script src="lib/papaparse.min.js"></script>
-    <script src="lib/numeric-1.2.6.min.js"></script>
-    <script src="lib/utils.js"></script>
-    <script src="lib/three.js"></script>
-    <script src="lib/TrackballControls.js"></script>
-    <script src="lib/CSS3DRenderer.js"></script>
-    <script src="lib/PDBLoader.js"></script>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <script>
-        var filename ="COLVAR.csv";
-        var scope = this;
-        var loader = new THREE.XHRLoader( scope.manager );
-        loader.load( filename, function ( text ) {
-            var top = text.split( "\n" )[0].split(",");
-            makeOptions("plot1_list");
-            makeOptions("plot2_list1");
-            makeOptions("plot2_list2");
-            makeOptions("plot3_list1");
-            makeOptions("plot3_list2");
-            makeOptions("plot3_list3");
-            function makeOptions(listname) {
-                var select = document.getElementById(listname);
-            for (i=0;i<top.length;i++) {
-                var el = document.createElement("option");
-                el.textContent=top[i];
-                el.value= i+1;
-                select.appendChild(el);
-            }}
-        });
-        var headlen = document.getElementById("plot1_list");
-        var len = headlen.options.length;
-        var state_test = Array.apply(null, Array(len)).map(Number.prototype.valueOf,0);
-        console.log(len);
-        var state = [1,0,0,0,0,0,0,0,0,0,0,0,0]; // Default only first variable selected
-        var t0 = $("#time-min").val();
-        var t1 = $("#time-max").val();
-        d3.csv(filename, function(data){
-            var select = document.getElementById("plot1_list");
-            var newdata=[];
-            for (i=0;i<select.options.length;i++){
-                newdata.push(data[select.options[i].textContent]);
-            }
-            return newdata;
-        }, function(error, rows) {
-            var length=rows[0].length;
-            var xrows=[];
-
-            for (i= t0-1;i<t1;i++) {
-                var yo=[];
-                for (k=0;k<length;k++) {
-                    if (rows[i][k] != undefined)
-                    {yo.push(rows[i][k]);}
-                }
-                yo.push(i);
-                xrows.push(yo);
-            }
-            plotd3(MDScalculate(xrows,state),xrows,state);
-        });
-	</script>
+  </div>
     <div>
+        <button class="button" type="button" id="clear">Clear Selection</button>
+        <button class="button" type="button" id="writedata">Write Selection to File</button>
+        <button class="button" type="button" id="writeframe">Export Selected Frames to File</button>
+    </div>
+    <div id="footer">Loading</div>
+    <div>
+        <label>Show 3D diagram</label>
+        <input type="checkbox" name="3D" id="3D" value="1" checked onchange="showfigure()">
         <label>Colors</label>
         <select name="element_color" id="element_color">
             <option value="o">Select an Element</option>
@@ -138,7 +65,68 @@
         </select>
     </div>
 
+</div>
+	<script src="lib/d3.min.js"></script>
+    <script src="lib/numeric-1.2.6.min.js"></script>
+    <script src="lib/utils.js"></script>
+    <script src="lib/three.js"></script>
+    <script src="lib/fisheye.js"></script>
+    <script src="lib/TrackballControls.js"></script>
+    <script src="lib/CSS3DRenderer.js"></script>
+    <script src="lib/PDBLoader.js"></script>
+    <script src="lib/FileSaver.min.js"></script>
+    <script src="lib/jquery.js"></script>
     <script>
+        document.getElementById('plotting').checked = true;
+        var frames ={};
+        var filename ="COLVAR.csv";
+        var t0=1,t1=30;
+        var scope = this;
+        var loader = new THREE.XHRLoader( scope.manager );
+        loader.load( filename, function ( text ) {
+            var top = text.split( "\n" )[0].split(",");
+            makeOptions("plot_list1");
+            makeOptions("plot_list2");
+            makeOptions("plot_list3");
+            function makeOptions(listname) {
+                var select = document.getElementById(listname);
+            for (i=0;i<top.length;i++) {
+                var el = document.createElement("option");
+                el.textContent=top[i];
+                el.value= i;
+                select.appendChild(el);
+            }}
+        });
+        var headlen = document.getElementById("plot_list1");
+        var len = headlen.options.length;
+        var state = []; // Default only first variable selected
+         //t0 = $("#time-min").val();
+         //t1 = $("#time-max").val();
+        d3.csv(filename, function(data){
+            var select = document.getElementById("plot_list1");
+            var newdata=[];
+            keys= Object.keys(data);
+            for (i=0;i<select.options.length;i++){
+                newdata.push(data[keys[i]]);
+                state.push(0);
+            }
+            state[0]=1;
+            return newdata;
+        }, function(error, rows) {
+            var length=rows[0].length;
+            var xrows=[];
+            for (i= t0-1;i<t1;i++) {
+                var yo=[];
+                for (k=0;k<length;k++) {
+                    if (rows[i][k] != undefined)
+                    {yo.push(rows[i][k]);}
+                }
+                yo.push(i);
+                xrows.push(yo);
+            }
+            plotd3(MDScalculate(xrows,state),xrows,state);
+        });
+
         var camera, scene, renderer;
         var controls;
         var root;
@@ -153,15 +141,15 @@
         var framenum=1;
         var loader = {};
         var trajectory="lib/trajout.gro"
-
+        var atomcount=0;
+        var show3D = true;
+        var xbox =0,ybox=0,zbox=0;
         var colorSpriteMap = {};
         var baseSprite = {};
-        var CPK = { "h": [ 255,255,255 ], "k": [ 0,128,128 ], "o": [ 255,0,0 ], "at": [ 128,128,0 ], "si": [ 0,128,128 ] };
-
+        var CPK = { "h": [ 255,255,255 ], "c": [ 0,128,128 ], "n": [ 255,0,0 ], "at": [ 128,128,0 ], "si": [ 0,128,128 ] };
 
         init(framenum);
         animate();
-
 
     </script>
 	</body>
