@@ -10,7 +10,7 @@
 <title>Visualizing Molecular Dynamics Simulation</title>
 <body style="overflow-x: scroll">
             <div align="center">
-            <h3>Time Curve Visualization</h3>
+            <h3>Exploratory Data Analysis Tool for Molecular Simulation Data</h3>
             <div style="width:100%;">
             <div  style="margin-left:10px; width:250px">
                 <label>Show/Hide Plotting Options</label>
@@ -33,6 +33,7 @@
               <input type="checkbox" name="filtershow" id="filtershow" onchange="showDiv()" unchecked>
       <div id="filters">
                             <button class="button" type="button" id="filterbutton">Submit Filter Options</button>
+                            <button class="button" type="button" id="clearfilter" onclick="removeFilters()">Clear Filters</button>
       </div>
             <div >
                 <label>Show/Hide 3D Diagram</label>
@@ -72,7 +73,7 @@
     <div style="width: 100%;">
       <div><img src="lib/legend.png" style="margin-left:-195px;width:100px;height:200px;position:absolute;"></div>
     <div id="wrap" style="width: 500px; float: left; margin-left:0px;"></div>
-    <!-- <div id="container" style="margin-left: 520px; background-color:#bfcfec;width:500px;" ></div> -->
+    <div id="container" style="margin-left: 520px; background-color:#bfcfec;width:500px;" ></div>
   </div>
 
     <div id="footer">Loading</div>
