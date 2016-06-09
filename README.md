@@ -8,8 +8,13 @@ Find the writeup for hte project [here] (final/paper-arushi3.pdf)
 Find a summary image of the tool [here] (final/summary.png)  
 
 ## Running the web-based tool
-[Link] (http://cse512-16s.github.io/fp-arushiprakash/) to the site
+[Link] (http://cse512-16s.github.io/fp-arushiprakash/) to the site  
 
+## Research/Development of Project  
+The project developed on 3 fronts - improving the scatter plot, improving the 3D rendering and improving UI. Here were the main concerns for all of them:  
+* Improving the scatter plot - The algorithm for multi-dimensional scaling, making scatter plots, adding tooltip information and so on were pretty standard. Adding features like filters, connecting data points to structure so that they render the correct image on clicking, point selectio and writing to file, dynamically updating all selections, filters and dropdown boxes according to user's data were the most time-consuming aspects. I also obtained a lot of feedback from domain users who were skeptical of features like fisheye zoom, the validity of the scatter plot, and general usability of the tool. It was essential at all times for the user to have the option to access real data bound to these points at all times. All these features were coded using javascript and d3.    
+* Improving the 3D rendering - The Threejs package was used to make the molecules which works on webGL. The greatest challenge was speeding up the rendering process - also the users' greatest complaints- since it is not as optimized as openGL. To speed up the system, only atoms are repesented and not bonds. Te challenging part was creating a parser that would crunch user data in its original form and make it amenable to making a 3D model quickly and also be able to access different structures at different times. The colors of atoms and size of atoms are standards used in the world of molecular modelling.  
+* Improving the UI - The UI needed to be simple and distraction free. Getting options dynamically and giving users options to hide various options when they want to concentrate on other activites was the main concern here.  
 
 ## Sample data (used for demo) 
   This data come from a protein simulation - 4 LK-alpha 14 proteins (shown below) in water (not shown). The size of the proteins (radius of gyration), inter-protein distances, energy and other association parameters have been tracked during the simulation. This data usually fluctuates (a lot) within a range and occasionally jumps to a new state or value. Fluctuations capture the stability of the system and jumps are important to track rare-events in the simulations.  
